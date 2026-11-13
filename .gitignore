@@ -1,0 +1,25 @@
+# Configuration files containing credentials
+config/config.php
+.env
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE and Editor directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Log files
+*.log
+error_log
+
+# Database backups or dumps with sensitive test data
+*.sql.bak
+*.sqlite
+*.db
+
+# Temporary files
+/tmp/
