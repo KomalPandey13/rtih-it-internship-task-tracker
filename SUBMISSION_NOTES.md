@@ -1,6 +1,7 @@
 # RTIH Task Tracker – Technical Submission Notes
 
 > **Candidate / Intern Submission**  
+> **Candidate Name:** Komal Pandey  
 > **Organization:** Ratan Tata Innovation Hub Amaravati Foundation (RTIH)  
 > **Assignment:** Intern IT Technical Assignment – Core PHP 8.x & MySQL Task Tracker Web Application  
 > **Tech Stack:** Vanilla Core PHP 8.2+, MySQL 8.0 / MariaDB, PDO, Bootstrap 5.3, Bootstrap Icons  
@@ -41,7 +42,7 @@
 
 ## 2. Manual Test-Case Verification Matrix (Assignment Testing Checklist)
 
-The application was tested against all 9 items in the assignment Testing Checklist. In addition, an automated test suite (`php test_suite.php`) was executed to verify all 24 syntax, helper, and security points.
+The application was rigorously tested against all 9 items in the assignment Testing Checklist. In addition, an automated test runner (`php test_suite.php`) was executed, returning **24 Passed, 0 Failed**.
 
 | # | Checklist Item | Test Input / Action Performed | Expected Behavior | Observed Result | Status |
 |:---|:---|:---|:---|:---|:---|
@@ -54,6 +55,51 @@ The application was tested against all 9 items in the assignment Testing Checkli
 | **7** | **Filter-Preserving Pagination** | Filter by Status `"Pending"`, then click Page 2 link. | URL updates to `?status=Pending&page=2`; active filter is retained across page jump. | Status filter remains active on Page 2; does not reset to showing all tasks. | **PASS** |
 | **8** | **Edit Task Authorization** | Log in as Priya (User 1); manually visit `task_edit.php?id=7` (belongs to Rahul, User 2). | System detects `user_id != 2`; rejects access; redirects to `index.php` with red alert: *"Task not found or access denied."* | IDOR attack completely blocked; form does not render; no data leaked. | **PASS** |
 | **9** | **Delete Task Guard & Confirm** | Click trash icon on dashboard. | Browser displays JS confirmation dialog; on confirmation, submits POST with CSRF token to `task_delete.php`; task is removed. | Task deleted from DB; success alert displayed; cancelling prompt aborts deletion safely. | **PASS** |
+
+### Automated Test Runner (`php test_suite.php`)
+```text
+========================================================
+ RTIH Task Tracker - Verification & Automated Test Suite
+========================================================
+
+1. Checking PHP Syntax across all source files:
+  [PASS] Syntax: index.php
+  [PASS] Syntax: login.php
+  [PASS] Syntax: logout.php
+  [PASS] Syntax: register.php
+  [PASS] Syntax: task_create.php
+  [PASS] Syntax: task_delete.php
+  [PASS] Syntax: task_edit.php
+  [PASS] Syntax: task_status.php
+  [PASS] Syntax: includes/auth.php
+  [PASS] Syntax: includes/csrf.php
+  [PASS] Syntax: includes/db.php
+  [PASS] Syntax: includes/footer.php
+  [PASS] Syntax: includes/header.php
+  [PASS] Syntax: includes/helpers.php
+  [PASS] Syntax: includes/session.php
+  [PASS] Syntax: config/config.example.php
+  [PASS] Syntax: config/config.php
+
+2. Testing Utility Helpers (includes/helpers.php):
+  [PASS] XSS Escaper e() sanitizes script tags and special chars
+  [PASS] Date Formatter format_date() formats valid dates and handles null
+  [PASS] Status Badge status_badge() returns correct Bootstrap 5 classes
+  [PASS] Query String Builder build_query_params() preserves existing filters
+
+3. Testing CSRF Security (includes/csrf.php):
+  [PASS] Generates 64-char hex CSRF token and validates with hash_equals
+
+4. Testing Password Security:
+  [PASS] Verifies seeded bcrypt password hash against 'Password@123'
+
+5. Simulating Multi-Tenant Authorization (User A vs User B):
+  [PASS] Guards against cross-user task modification (IDOR protection)
+
+========================================================
+ Results: 24 Passed, 0 Failed
+========================================================
+```
 
 ### Sample Bugs Discovered and Resolved During Testing
 1. **Pagination Filter Loss:** Initially, clicking page links like `?page=2` caused active `search` and `status` GET parameters to be cleared. **Fix:** Developed `build_query_params(['page' => $p])` helper in `includes/helpers.php` which preserves all existing `$_GET` parameters and overrides only the requested page key.
@@ -159,7 +205,7 @@ mysql -u root -p rtih_task_tracker < backup_rtih_task_tracker.sql
 ### Step 3: Multi-Tenant Ownership Authorization Model (45 Seconds)
 > "Finally, let's talk about authorization. In multi-user web applications, one of the most critical vulnerabilities is Insecure Direct Object References (IDOR), where User A changes the URL ID or hidden form field to tamper with User B's records.
 > 
-> In this application, backend authorization is enforced unconditionally at the database query level:
+> In this application, backend authorization is enforced unconditionally at the database level:
 > - On the edit page (`task_edit.php`), the lookup query is:  
 >   `SELECT * FROM tasks WHERE id = :id AND user_id = :user_id`  
 >   If User 1 visits `task_edit.php?id=7` (which belongs to User 2), the query returns zero rows, triggering an immediate access denied alert and redirecting to the dashboard.
@@ -168,4 +214,3 @@ mysql -u root -p rtih_task_tracker < backup_rtih_task_tracker.sql
 > To make local verification effortless, I pre-seeded two demo users—Priya, an intern, and Rahul, an admin—with 8 realistic tasks, along with an automated test suite that verifies all 9 checklist points."
 
 ---
-

@@ -1,28 +1,57 @@
 # RTIH Task Tracker
 
 > **Ratan Tata Innovation Hub Amaravati Foundation (RTIH)**  
-> *Intern IT Technical Assignment – Core PHP 8.x + MySQL (PDO) Web Application*
+> *Intern IT Technical Assignment – Core PHP 8.x + MySQL (PDO) Web Application*  
+> **Candidate:** Komal Pandey  
 
 [![PHP 8.2+](https://img.shields.io/badge/PHP-8.2%2B-blue.svg)](https://www.php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-5.7%2B%20%2F%208.0%2B-orange.svg)](https://www.mysql.com/)
 [![Bootstrap 5.3](https://img.shields.io/badge/Bootstrap-5.3-purple.svg)](https://getbootstrap.com/)
 [![Security](https://img.shields.io/badge/Security-PDO%20%7C%20CSRF%20%7C%20Bcrypt-success.svg)](#security-architecture)
+[![Tests](https://img.shields.io/badge/Tests-24%20Passed%20%7C%200%20Failed-brightgreen.svg)](#testing-the-application)
 
-A complete, production-grade, beginner-readable Task Tracking system developed in vanilla Core PHP (PDO) and MySQL with Bootstrap 5.3. Implements full CRUD capabilities, multi-tenant ownership authorization (users can strictly view and edit only their own tasks), title search, status/priority filtering, inline status switching, filter-preserving pagination, and OWASP-compliant security defenses.
+A complete, production-grade, beginner-readable Task Tracking web application developed in vanilla Core PHP (PDO) and MySQL with Bootstrap 5.3. Implements full CRUD capabilities, multi-tenant ownership authorization (users can strictly view and edit only their own tasks), title search, status/priority filtering, inline status switching, filter-preserving pagination, and OWASP-compliant security defenses.
 
 ---
 
 ## Table of Contents
-1. [Features & Assignment Scope](#features--assignment-scope)
-2. [Project Structure](#project-structure)
-3. [Quick Setup Guide](#quick-setup-guide)
-   - [Option A: XAMPP / WAMP / Laragon](#option-a-xampp--wamp--laragon)
+1. [Screenshots & User Interface](#screenshots--user-interface)
+2. [Features & Assignment Scope](#features--assignment-scope)
+3. [Project Structure](#project-structure)
+4. [Quick Setup Guide](#quick-setup-guide)
+   - [Option A: Local XAMPP / WAMP / Laragon](#option-a-local-xampp--wamp--laragon)
    - [Option B: PHP Built-in Server + MySQL](#option-b-php-built-in-server--mysql)
-4. [Demo Accounts & Test Credentials](#demo-accounts--test-credentials)
-5. [Database Schema Justification](#database-schema-justification)
-6. [Security Architecture](#security-architecture)
-7. [Testing the Application](#testing-the-application)
-8. [MySQL Backup & Restore Instructions](#mysql-backup--restore-instructions)
+5. [Demo Accounts & Test Credentials](#demo-accounts--test-credentials)
+6. [Database Schema Justification](#database-schema-justification)
+7. [Security Architecture](#security-architecture)
+8. [Testing the Application](#testing-the-application)
+9. [MySQL Backup & Restore Instructions](#mysql-backup--restore-instructions)
+
+---
+
+## Screenshots & User Interface
+
+### 1. User Authentication (`login.php`)
+*Secure login interface with CSRF token protection, password verification via bcrypt, and pre-seeded demo account callout:*
+![01 Login Screen](screenshots/01_login.png)
+
+---
+
+### 2. Protected Task Dashboard (`index.php`)
+*Real-time summary metric cards (Total, Pending, In Progress, Completed), title search bar, status & priority filters, and interactive task table:*
+![02 Dashboard Screen](screenshots/02_dashboard.png)
+
+---
+
+### 3. Create Task Modal (`task_create.php`)
+*Responsive task creation modal with server-side validation, title length limits, status enums, priority selection, and due date:*
+![03 Create Task Screen](screenshots/03_create_task.png)
+
+---
+
+### 4. Filter-Preserving Pagination
+*5 tasks per page with dynamic query-parameter builder that retains active search keywords, status filters, and priority filters across page jumps:*
+![04 Pagination Screen](screenshots/04_pagination.png)
 
 ---
 
@@ -33,7 +62,7 @@ A complete, production-grade, beginner-readable Task Tracking system developed i
 - **Read**: View task list in a responsive dashboard table with status badges and overdue alerts.
 - **Update**: Edit full task details or quickly switch status with a single click from the dashboard table.
 - **Delete**: Remove tasks with JavaScript client-side confirmation dialog and CSRF-protected POST handler.
-- **User Feedback**: Persistent Bootstrap 5 alert flash messages for all actions.
+- **User Feedback**: Persistent Bootstrap 5 alert flash messages for all user actions.
 
 ### Level 2: Search, Filter, and Validation
 - **Search**: Real-time keyword search against task titles via prepared `LIKE` queries.
@@ -47,7 +76,7 @@ A complete, production-grade, beginner-readable Task Tracking system developed i
 - **Logout**: CSRF-protected POST-only logout that destroys server session and purges browser cookies.
 - **Multi-Tenant Ownership**: Strict authorization where every SQL query enforces `WHERE user_id = :user_id`. Users can NEVER view, edit, update status, or delete another user's tasks, even by tampering with `?id=` query strings or POST payloads.
 
-### Optional Bonuses (Implemented)
+### Optional Bonuses (All Implemented)
 - **Top Metric Cards**: Summary counters showing Total, Pending, In Progress, and Completed tasks for the logged-in user.
 - **Priority & Due Date**: Task priority levels (`Low`, `Medium`, `High`) and due dates with visual "Overdue" badges for past-due tasks.
 - **Filter-Preserving Pagination**: 5 tasks per page with custom query-string generator preserving active search, status, and priority parameters during page navigation.
@@ -60,15 +89,15 @@ A complete, production-grade, beginner-readable Task Tracking system developed i
 ```text
 rtih-task-tracker/
 │
-├── .gitignore                   # Ignores config.php, .env, OS and IDE temporary files
-├── database.sql                 # MySQL schema, indexes, foreign keys, and 2 seeded users + 8 tasks
-├── README.md                    # Setup guide, architecture details, and interview preparation
-├── SUBMISSION_NOTES.md          # Assignment checklist, test matrix, AI disclosure, and interview script
-├── test_suite.php               # Standalone test runner for syntax, security, and authorization
+├── .gitignore                   # Ignores config/config.php, .env, OS and IDE temporary files
+├── database.sql                 # MySQL schema, indexes, foreign keys, 2 seeded users + 8 tasks
+├── README.md                    # Setup guide, screenshots, architecture, and credentials
+├── SUBMISSION_NOTES.md          # 9-point test matrix, backup CLI commands, AI disclosure, script
+├── test_suite.php               # Standalone automated test runner (24/24 tests passed)
 │
 ├── config/
-│   ├── config.example.php       # Template configuration with placeholder credentials
-│   └── config.php               # Active local config (configured for XAMPP root/empty pass)
+│   ├── config.example.php       # Template configuration with placeholder credentials (127.0.0.1)
+│   └── config.php               # Local config (git-ignored, configured for 127.0.0.1:3306 root/'')
 │
 ├── includes/
 │   ├── auth.php                 # require_login(), require_guest(), current_user(), is_logged_in()
@@ -83,6 +112,11 @@ rtih-task-tracker/
 ├── login.php                    # User authentication form & session initialization
 ├── logout.php                   # POST-only CSRF-protected session destruction endpoint
 ├── register.php                 # New user registration & duplicate email check
+├── screenshots/                 # Application screenshots for technical review
+│   ├── 01_login.png
+│   ├── 02_dashboard.png
+│   ├── 03_create_task.png
+│   └── 04_pagination.png
 ├── task_create.php              # POST-only task creation handler
 ├── task_delete.php              # POST-only task deletion handler with ownership guard
 ├── task_edit.php                # Task editing page (GET pre-fill & POST update with ownership guard)
@@ -93,10 +127,10 @@ rtih-task-tracker/
 
 ## Quick Setup Guide
 
-### Option A: XAMPP / WAMP / Laragon
+### Option A: Local XAMPP / WAMP / Laragon
 
 1. **Place Project in Web Root**:
-   - Copy or clone this folder into your web root:
+   - Copy or clone this folder into your local web root:
      - XAMPP: `C:/xampp/htdocs/rtih-task-tracker/`
      - Laragon: `C:/laragon/www/rtih-task-tracker/`
      - MAMP: `/Applications/MAMP/htdocs/rtih-task-tracker/`
@@ -111,12 +145,13 @@ rtih-task-tracker/
    - *(Or run via MySQL CLI: `mysql -u root -p < database.sql`)*.
 
 4. **Verify Configuration**:
-   - The file `config/config.php` is already configured for default XAMPP/Laragon credentials:
+   - The file `config/config.php` (and `config/config.example.php`) is pre-configured for standard local credentials:
      - Host: `127.0.0.1`
+     - Port: `3306`
      - Database: `rtih_task_tracker`
      - User: `root`
      - Password: `''` (empty)
-   - If your local MySQL has a root password, update `config/config.php` accordingly.
+   - If your local MySQL instance has a root password, set it in `config/config.php`.
 
 5. **Open Application**:
    - Visit: `http://localhost/rtih-task-tracker/login.php` in your browser.
@@ -130,7 +165,7 @@ rtih-task-tracker/
    mysql -u root -p < database.sql
    ```
 
-2. **Copy Configuration (if config.php is missing)**:
+2. **Create Local Config (if not already present)**:
    ```bash
    cp config/config.example.php config/config.php
    ```
@@ -246,4 +281,3 @@ mysqldump -u root -p --routines --triggers rtih_task_tracker > backup_rtih_task_
 ```bash
 mysql -u root -p rtih_task_tracker < backup_rtih_task_tracker.sql
 ```
-
