@@ -34,3 +34,4 @@ return [
         'session_ttl' => 7200,                 // Session lifetime in seconds (2 hours)
     ],
 ];
+

@@ -83,3 +83,4 @@ function require_guest(): void
         exit;
     }
 }
+

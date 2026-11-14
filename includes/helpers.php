@@ -147,3 +147,4 @@ function build_query_params(array $overrides = []): string
     $queryString = http_build_query($params);
     return $queryString !== '' ? '?' . $queryString : '';
 }
+

@@ -47,11 +47,11 @@ function get_db(): PDO
 
     global $dbConfig, $isProd;
 
-    $host    = $dbConfig['host'] ?? '127.0.0.1';
-    $port    = $dbConfig['port'] ?? 3306;
-    $dbname  = $dbConfig['name'] ?? 'rtih_task_tracker';
-    $user    = $dbConfig['user'] ?? 'root';
-    $pass    = $dbConfig['pass'] ?? '';
+    $host    = getenv('DB_HOST') ?: ($dbConfig['host'] ?? '127.0.0.1');
+    $port    = (int)(getenv('DB_PORT') ?: ($dbConfig['port'] ?? 3306));
+    $dbname  = getenv('DB_NAME') ?: ($dbConfig['name'] ?? 'rtih_task_tracker');
+    $user    = getenv('DB_USER') ?: ($dbConfig['user'] ?? 'root');
+    $pass    = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ($dbConfig['pass'] ?? '');
     $charset = $dbConfig['charset'] ?? 'utf8mb4';
 
     $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset={$charset}";
@@ -133,3 +133,4 @@ function get_db(): PDO
 
 // Global PDO handle for simple procedural scripts
 $pdo = get_db();
+

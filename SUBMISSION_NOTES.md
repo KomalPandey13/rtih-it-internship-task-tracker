@@ -168,3 +168,4 @@ mysql -u root -p rtih_task_tracker < backup_rtih_task_tracker.sql
 > To make local verification effortless, I pre-seeded two demo users—Priya, an intern, and Rahul, an admin—with 8 realistic tasks, along with an automated test suite that verifies all 9 checklist points."
 
 ---
+

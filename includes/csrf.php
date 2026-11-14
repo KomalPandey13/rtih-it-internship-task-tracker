@@ -85,3 +85,4 @@ function validate_csrf_or_abort(): void
         exit;
     }
 }
+

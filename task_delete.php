@@ -68,3 +68,4 @@ if (strpos($redirectUrl, 'http') === 0 || strpos($redirectUrl, '//') === 0) {
 
 header('Location: ' . $redirectUrl);
 exit;
+

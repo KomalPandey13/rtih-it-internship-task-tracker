@@ -62,3 +62,4 @@ $_SESSION['flash_messages'][] = [
 
 header('Location: login.php');
 exit;
+

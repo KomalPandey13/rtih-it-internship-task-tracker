@@ -246,3 +246,4 @@ mysqldump -u root -p --routines --triggers rtih_task_tracker > backup_rtih_task_
 ```bash
 mysql -u root -p rtih_task_tracker < backup_rtih_task_tracker.sql
 ```
+

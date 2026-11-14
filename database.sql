@@ -88,3 +88,4 @@ INSERT INTO `tasks` (`id`, `user_id`, `title`, `description`, `status`, `priorit
 (8, 2, 'Review RTIH intern onboarding repository PRs', 'Perform code reviews on assignment submissions, checking for PDO prepared statements and multi-tenant authorization.', 'In Progress', 'High', '2026-11-17', NOW(), NOW()),
 (9, 2, 'Optimize MySQL indexes for task filtering queries', 'Analyze composite index performance on status, priority, and due_date columns under high concurrency.', 'Pending', 'Medium', '2026-11-22', NOW(), NOW()),
 (10, 2, 'Set up automated daily database backup cron job', 'Schedule mysqldump cron task on Linux server with encrypted off-site cloud storage synchronization.', 'Pending', 'Low', '2026-11-28', NOW(), NOW());
+
